@@ -28,9 +28,38 @@ def osszegzes(l):
             osszeg+=elem
     return osszeg        
 
-def kiir(l,r_kg):
+def megszamolas(l):
+    db=0
+    for elem in l:
+        if elem<=3:
+            db+=1
+    return db 
+
+def eldontes1(l):
+    van=False
+    i=0
+    while i<len(l) and not l[i]>=3:
+        i+=1
+    if i<len(l):
+        van=True
+    return van        
+
+def eldontes2(l):
+    i=len(l)-1
+    while i>0 and not (l[i]>l[i-1]):
+        i-=1
+    if i<len(l):
+        van=True
+    else:
+        van=False
+    return van    
+
+def kiir(l,r_kg,r_a,r_l3s,r_le_s):
     print(f"A libák súlyai: {l}.")
-    print(f"{r_kg} kiló libát ehet meg a róka")
+    print(f"{r_kg} kiló libát ehet meg a róka.")
+    print(f"Átlagosan {r_a} kilósak a rókának maradt libák.")
+    print(f"{r_l3s} olyan, hogy a róka 3 kilos libát lopott.")
+    print(f"{r_le_s} olyan, hogy a róka kisebb libát hozott, mint az előző nap.")
 #Főprogram
 #input
 libak=beolvasas()
@@ -38,5 +67,23 @@ libak=beolvasas()
 #szamolás
 # a. Hány kiló libát ehet meg a róka?
 r_megehet_ossz_kg=osszegzes(libak)
+
+# b. Átlagosan hány kilósak a rókának maradt libák?
+r_megehet_db=megszamolas(libak)
+r_atlag=r_megehet_ossz_kg/r_megehet_db
+
+# c1. Előfordult-e olyan, hogy a róka legalább háromkilós libát lopott?
+r_legalabb_3_e=eldontes1(libak)
+if r_legalabb_3_e:
+    r_legalabb_3_e_string="Előfordult"
+else:
+    r_legalabb_3_e_string="Nem fordult elő"
+    
+# c2. Előfordult-e olyan, hogy a róka kisebb libát hozott, mint az előző napon?
+r_lopott_kisebb_libat_elozo_nap=eldontes2(libak)
+if r_lopott_kisebb_libat_elozo_nap:
+    r_lopott_kisebb_libat_elozo_nap_string="Előfordult"
+else:
+    r_lopott_kisebb_libat_elozo_nap_string="Nem fordult elő"
 #output
-kiir(libak,r_megehet_ossz_kg)
+kiir(libak,r_megehet_ossz_kg,r_atlag)
